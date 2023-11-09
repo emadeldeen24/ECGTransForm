@@ -20,15 +20,15 @@ There are two configuration files:
 If you found this work useful for you, please consider citing it.
 ```
 @ARTICLE{ecgTransForm,
-	title = {ECGTransForm: Empowering adaptive ECG arrhythmia classification framework with bidirectional transformer},
-	journal = {Biomedical Signal Processing and Control},
-	volume = {89},
-	pages = {105714},
-	year = {2024},
-	issn = {1746-8094},
-	doi = {https://doi.org/10.1016/j.bspc.2023.105714},
-	url = {https://www.sciencedirect.com/science/article/pii/S1746809423011473},
-	author = {Hany El-Ghaish and Emadeldeen Eldele},
+    title = {ECGTransForm: Empowering adaptive ECG arrhythmia classification framework with bidirectional transformer},
+    journal = {Biomedical Signal Processing and Control},
+    volume = {89},
+    pages = {105714},
+    year = {2024},
+    issn = {1746-8094},
+    doi = {https://doi.org/10.1016/j.bspc.2023.105714}, 
+    url = {https://www.sciencedirect.com/science/article/pii/S1746809423011473},
+    author = {Hany El-Ghaish and Emadeldeen Eldele},
 }
 ```
 
