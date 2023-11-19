@@ -9,11 +9,11 @@ parser = argparse.ArgumentParser()
 
 # ========  Experiments Name ================
 parser.add_argument('--save_dir',               default='experiments_logs',         type=str, help='Directory containing all experiments')
-parser.add_argument('--experiment_description', default='multiple_runs',   type=str, help='experiment name')
-parser.add_argument('--run_description',        default='three_exps',     type=str, help='run name')
+parser.add_argument('--experiment_description', default='Exp1',   type=str, help='experiment name')
+parser.add_argument('--run_description',        default='run1',     type=str, help='run name')
 
 # ========= Select the DATASET ==============
-parser.add_argument('--dataset',                default='ptb',           type=str, help='mit, ptb')
+parser.add_argument('--dataset',                default='mit',           type=str, help='mit, ptb')
 parser.add_argument('--seed_id',                default='0',             type=str, help='to fix a seed while training')
 
 # ========= Experiment settings ===============
