@@ -7,7 +7,7 @@ Cardiac arrhythmias, deviations from the normal rhythmic beating of the heart, a
 
 
 ## Datasets
-We used two public datasets in this study (The preprocessed datasets are available [Here](https://www.kaggle.com/datasets/shayanfazeli/heartbeat)):
+We used two public datasets in this study (Download our preprocessed version of the datasets from [Google Drive](https://drive.google.com/file/d/1eZ7NS7mED2ZCU2YDbeWMmFAc2TsPsX0E/view?usp=sharing)):
 - [MIT-BIH](https://www.physionet.org/content/mitdb/1.0.0/)
 - [PTB](https://physionet.org/content/ptbdb/1.0.0/)
 
