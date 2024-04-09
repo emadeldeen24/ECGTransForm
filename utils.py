@@ -76,16 +76,15 @@ def starting_logs(data_type, exp_log_dir, seed_id):
     return logger, log_dir
 
 
-def save_checkpoint(home_path, model, dataset, dataset_configs, log_dir, hparams):
+def save_checkpoint(exp_log_dir, model, dataset, dataset_configs, hparams, status):
     save_dict = {
         "dataset": dataset,
         "configs": dataset_configs.__dict__,
         "hparams": dict(hparams),
-        "model": model[0].state_dict(),
-        "clf": model[1].state_dict()
+        "model": model.state_dict()
     }
     # save classification report
-    save_path = os.path.join(home_path, log_dir, "checkpoint.pt")
+    save_path = os.path.join(exp_log_dir, f"checkpoint_{status}.pt")
 
     torch.save(save_dict, save_path)
 
@@ -100,7 +99,7 @@ def _calc_metrics(pred_labels, true_labels, classes_names):
     return accuracy * 100, r["macro avg"]["f1-score"] * 100
 
 
-def _save_metrics(pred_labels, true_labels, log_dir, home_path, classes_names):
+def _save_metrics(pred_labels, true_labels, log_dir, status):
     pred_labels = np.array(pred_labels).astype(int)
     true_labels = np.array(true_labels).astype(int)
 
@@ -112,8 +111,8 @@ def _save_metrics(pred_labels, true_labels, log_dir, home_path, classes_names):
     df = df * 100
 
     # save classification report
-    file_name = "classification_report.xlsx"
-    report_Save_path = os.path.join(home_path, log_dir, file_name)
+    file_name = f"classification_report_{status}.xlsx"
+    report_Save_path = os.path.join(log_dir, file_name)
     df.to_excel(report_Save_path)
 
 
