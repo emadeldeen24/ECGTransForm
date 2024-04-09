@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-
+import datetime
 import os
 import collections
 import numpy as np
@@ -14,7 +14,7 @@ from models import ecgTransForm
 from dataloader import data_generator
 from configs.data_configs import get_dataset_class
 from configs.hparams import get_hparams_class
-from utils import AverageMeter, to_device, _save_metrics, copy_Files, _plot_umap
+from utils import AverageMeter, to_device, _save_metrics, copy_Files
 from utils import fix_randomness, starting_logs, save_checkpoint, _calc_metrics
 
 
@@ -27,7 +27,7 @@ class trainer(object):
         self.device = torch.device(args.device)
 
         # Exp Description
-        self.run_description = args.run_description
+        self.run_description = f"{args.run_description}_{datetime.datetime.now().strftime('%H_%M')}"
         self.experiment_description = args.experiment_description
 
         # paths
@@ -88,7 +88,12 @@ class trainer(object):
             weight_decay=self.hparams["weight_decay"],
             betas=(0.9, 0.99)
         )
-        self.cross_entropy = torch.nn.CrossEntropyLoss(weight=torch.tensor(np.array(self.cw_dict.values())).float().to(self.device))
+        
+        weights = [float(value) for value in self.cw_dict.values()]
+        # Now convert the list of floats to a numpy array, then to a PyTorch tensor
+        weights_array = np.array(weights).astype(np.float32)  # Ensuring the correct dtype
+        weights_tensor = torch.tensor(weights_array).to(self.device)
+        self.cross_entropy = torch.nn.CrossEntropyLoss(weight=weights_tensor)
 
         best_acc = 0
         best_f1 = 0
@@ -134,16 +139,14 @@ class trainer(object):
                 best_f1 = ts_f1
                 best_acc = ts_acc
                 save_checkpoint(self.exp_log_dir, model, self.dataset, self.dataset_configs, self.hparams, "best")
-                _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir,
-                              self.dataset_configs.class_names, "best")
+                _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "best")
 
             # logging
             self.logger.debug(f'VAL  : Acc:{ts_acc:2.4f} \t F1:{ts_f1:2.4f} (best: {best_f1:2.4f})')
             self.logger.debug(f'-------------------------------------')
 
             # LAST EPOCH
-        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir,
-                      self.dataset_configs.class_names, "last")
+        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "last")
         self.logger.debug("LAST EPOCH PERFORMANCE ...")
         self.logger.debug(f'Acc:{ts_acc:2.4f} \t F1:{ts_f1:2.4f}')
 
@@ -158,8 +161,7 @@ class trainer(object):
         print(" === Evaluating on TEST set ===")
         self.evaluate(model, self.test_dl)
         test_acc, test_f1 = self.calc_results_per_run()
-        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir,
-                              self.dataset_configs.class_names, "best")
+        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "test")
         self.logger.debug(f'Acc:{test_acc:2.4f} \t F1:{test_f1:2.4f}')
 
 
@@ -189,7 +191,3 @@ class trainer(object):
                 self.true_labels = np.append(self.true_labels, labels.data.cpu().numpy())
 
         self.trg_loss = torch.tensor(total_loss_).mean()  # average loss
-
-
-
-
