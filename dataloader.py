@@ -70,7 +70,7 @@ def data_generator(data_path, data_type, hparams):
                                              shuffle=False, drop_last=True, num_workers=0)
     test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size,
                                               shuffle=False, drop_last=False, num_workers=0)
-    return train_loader, val_loader, test_loader, cw_dict
+    return train_loader, val_loader, test_loader, get_class_weight(cw_dict)
 
 
 import math
