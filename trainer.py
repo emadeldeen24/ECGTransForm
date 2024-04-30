@@ -139,20 +139,20 @@ class trainer(object):
                 best_f1 = ts_f1
                 best_acc = ts_acc
                 save_checkpoint(self.exp_log_dir, model, self.dataset, self.dataset_configs, self.hparams, "best")
-                _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "best")
+                _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "validation_best")
 
             # logging
             self.logger.debug(f'VAL  : Acc:{ts_acc:2.4f} \t F1:{ts_f1:2.4f} (best: {best_f1:2.4f})')
             self.logger.debug(f'-------------------------------------')
 
             # LAST EPOCH
-        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "last")
-        self.logger.debug("LAST EPOCH PERFORMANCE ...")
+        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "validation_last")
+        self.logger.debug("LAST EPOCH PERFORMANCE on validation set...")
         self.logger.debug(f'Acc:{ts_acc:2.4f} \t F1:{ts_f1:2.4f}')
 
         self.logger.debug(":::::::::::::")
         # BEST EPOCH
-        self.logger.debug("BEST EPOCH PERFORMANCE ...")
+        self.logger.debug("BEST EPOCH PERFORMANCE on validation set ...")
         self.logger.debug(f'Acc:{best_acc:2.4f} \t F1:{best_f1:2.4f}')
         save_checkpoint(self.exp_log_dir, model, self.dataset, self.dataset_configs, self.hparams, "last")
 
@@ -161,7 +161,7 @@ class trainer(object):
         print(" === Evaluating on TEST set ===")
         self.evaluate(model, self.test_dl)
         test_acc, test_f1 = self.calc_results_per_run()
-        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "test")
+        _save_metrics(self.pred_labels, self.true_labels, self.exp_log_dir, "test_last")
         self.logger.debug(f'Acc:{test_acc:2.4f} \t F1:{test_f1:2.4f}')
 
 
